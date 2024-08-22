@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorteio de Números da Loteria</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sorteio de Números da Loteria</h1>
+
+  <label for="tipoJogo">Escolha o tipo de jogo:</label>
+  <select id="tipoJogo">
+    <option value="quina">Quina</option>
+    <option value="mega-sena">Mega-Sena</option>
+    <option value="lotofácil">Lotofácil</option>
+    <option value="lotomania">Lotomania</option>
+  </select>
+
+  <button onclick="sortear()">Sortear Números</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function sortearNumeros(tipoJogo) {
+      let qtdNumeros;
+      let maxNumero;
+
+      // Configurações de acordo com o tipo de jogo
+      switch (tipoJogo.toLowerCase()) {
+        case 'quina':
+          qtdNumeros = 5;
+          maxNumero = 80;
+          break;
+        case 'mega-sena':
+          qtdNumeros = 6;
+          maxNumero = 60;
+          break;
+        case 'lotofácil':
+          qtdNumeros = 15;
+          maxNumero = 25;
+          break;
+        case 'lotomania':
+          qtdNumeros = 50;
+          maxNumero = 100;
+          break;
+        default:
+          return;
+      }
+
+      // Função para gerar números aleatórios e sem repetição
+      const numerosSorteados = new Set();
+      
+      while (numerosSorteados.size < qtdNumeros) {
+        const numero = Math.floor(Math.random() * maxNumero) + 1;
+        numerosSorteados.add(numero); // Garante que não haverá repetição
+      }
+
+      return Array.from(numerosSorteados).sort((a, b) => a - b); // Ordena os números
+    }
+
+    function sortear() {
+      const tipoJogo = document.getElementById("tipoJogo").value;
+      const numeros = sortearNumeros(tipoJogo);
+      const resultadoDiv = document.getElementById("resultado");
+
+      if (numeros) {
+        resultadoDiv.innerHTML = `<strong>Números sorteados para ${tipoJogo}:</strong> ${numeros.join(", ")}`;
+      } else {
+        resultadoDiv.innerHTML = `<strong>Erro:</strong> Tipo de jogo não reconhecido.`;
+      }
+    }
+  </script>
+</body>
+</html>
